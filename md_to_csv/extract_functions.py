@@ -12,7 +12,7 @@ def extract_platforms_from_yaml(yaml: str) -> list[str]:
 def extract_status_from_yaml(yaml: str) -> str:
 	pass
 
-def extract_related_games_from_yaml(yaml: str) -> str:
+def extract_related_games_from_yaml(yaml: str) -> list[str]:
 	pass
 
 # generic function to grab the raw str for a given property
