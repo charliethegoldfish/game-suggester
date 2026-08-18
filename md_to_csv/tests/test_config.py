@@ -1,7 +1,6 @@
 # General test data cond config values
 
-YAML_SNIPPET = """
----
+YAML_SNIPPET = """---
 aliases:
 tags:
   - "#remedy"
@@ -17,8 +16,7 @@ status: Completed
 hours-logged: 11.5
 image: "[[IMG-20260107162554393.png]]"
 related-games:
----
-"""
+---"""
 
 MD_SNIPPET_WITH_YAML = """
 ---

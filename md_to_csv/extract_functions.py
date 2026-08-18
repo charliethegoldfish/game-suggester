@@ -1,3 +1,5 @@
+import re
+from regex_config import YAML_REGEX
 
 def extract_name_from_title(title: str) -> str:
 	pass
@@ -23,4 +25,7 @@ def extract_property_raw_from_yaml(yaml: str, property_name: str) -> str:
 	pass
 
 def extract_yaml_from_md(markdown: str) -> str:
-	pass
+	yaml = re.search(YAML_REGEX, markdown, flags=re.DOTALL)
+	if yaml == None or yaml.group(0) == None:
+		return ""
+	return yaml.group(0)
