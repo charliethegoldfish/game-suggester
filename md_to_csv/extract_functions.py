@@ -2,11 +2,14 @@
 def extract_name_from_title(title: str) -> str:
 	pass
 
-# functions that process and return properties found in the md yaml portion
+# functions that process and return properties found in the yaml portion of some md
 def extract_genres_from_yaml(yaml: str) -> list[str]:
 	pass
 
 def extract_platforms_from_yaml(yaml: str) -> list[str]:
+	pass
+
+def extract_stores_from_yaml(yaml: str) -> list[str]:
 	pass
 
 def extract_status_from_yaml(yaml: str) -> str:
