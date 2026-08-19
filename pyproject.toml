@@ -1,0 +1,9 @@
+[project]
+name = "game-suggester"
+version = "0.1.0"
+description = "A CLI program to suggest games based on a few questions and a csv of owned games data"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "pyyaml>=6.0.3",
+]

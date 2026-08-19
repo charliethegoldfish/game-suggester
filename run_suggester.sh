@@ -1,2 +1,2 @@
 #!/bin/sh
-python3 game_suggester/main.py
+uv run game_suggester/main.py
