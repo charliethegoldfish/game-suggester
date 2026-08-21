@@ -1,5 +1,5 @@
 import re
-from regex_config import YAML_PROPERTIES_REGEX
+from md_to_csv.regex_config import YAML_PROPERTIES_REGEX
 
 def extract_name_from_filename(filename: str) -> str:
 	return filename.replace(".md", "")

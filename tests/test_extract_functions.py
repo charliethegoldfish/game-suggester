@@ -1,6 +1,6 @@
 import unittest
 
-from test_config import MD_SNIPPET_WITH_YAML, MD_SNIPPET_NO_YAML, YAML_SNIPPET
+from tests.test_config import MD_SNIPPET_WITH_YAML, MD_SNIPPET_NO_YAML, YAML_SNIPPET
 from md_to_csv.extract_functions import extract_yaml_from_md, extract_name_from_filename
 
 class TestExtractFunctions(unittest.TestCase):
