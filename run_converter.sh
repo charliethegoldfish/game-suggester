@@ -1,2 +1,2 @@
 #!/bin/sh
-uv run md_to_csv/main.py
+uv run main.py --generate $1

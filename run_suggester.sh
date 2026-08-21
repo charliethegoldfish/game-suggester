@@ -1,2 +1,2 @@
 #!/bin/sh
-uv run game_suggester/main.py
+uv run main.py --suggest $1
