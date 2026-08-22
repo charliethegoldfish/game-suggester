@@ -14,3 +14,5 @@ def format_list_contents(contents: list[str]) -> list[str]:
 def format_str_to_int(content: str) -> int:
 	return int(content)
 
+def format_list_to_str(contents: list[str]) -> str:
+	return ','.join(contents)
