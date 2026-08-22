@@ -1,0 +1,8 @@
+STATUS_KEY = "status"
+HOURS_KEY = "hours"
+PLATFORMS_KEY = "platforms"
+GENRES_KEY = "genres"
+STORES_KEY = "stores"
+RELEASE_KEY = "release"
+RELATED_KEY = "related"
+TAGS_KEY = "tags"

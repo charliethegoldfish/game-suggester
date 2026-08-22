@@ -1,2 +1,2 @@
 #!/bin/sh
-uv run main.py --generate $1
+uv run main.py --generate "$@"
