@@ -23,6 +23,8 @@ def converter(folder_path: str, verbose: bool) -> tuple[bool, str|None]:
 		init_csv_dialect()
 		csv_name = "game_library.csv"
 		write_to_csv(output_folder_path, csv_name, yaml_nodes)
+		print(f'Success: "{csv_name}" written to current working directory')
+		return True, csv_name
 
 
 	except Exception as e:
