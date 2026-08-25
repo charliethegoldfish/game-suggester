@@ -5,5 +5,6 @@ description = "A CLI program to suggest games based on a few questions and a csv
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "pyqt6>=6.11.0",
     "pyyaml>=6.0.3",
 ]
