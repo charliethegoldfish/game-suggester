@@ -30,7 +30,7 @@ def suggester(csv_path: str, verbose: bool) -> None:
 			print(f'Available tags: {tags}')
 
 		app = QApplication(sys.argv)
-		ex = SuggesterApp(genres, platforms, status_options, tags)
+		ex = SuggesterApp(game_nodes, genres, platforms, status_options, tags)
 		sys.exit(app.exec())
 
 	except Exception as e:
