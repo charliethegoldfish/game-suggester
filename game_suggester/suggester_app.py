@@ -3,6 +3,7 @@ from PyQt6.QtCore import (QDir, Qt)
 from PyQt6.QtWidgets import QApplication, QWidget, QComboBox, QLabel, QHBoxLayout, QVBoxLayout, QGridLayout, QCheckBox, QPushButton
 from PyQt6.QtGui import QIcon
 from core.gamenode import GameNode
+from core.core_config import *
 from game_suggester.filtering_functions import filter_games
 from game_suggester.pick_game_functions import pick_random_game
 
@@ -83,12 +84,52 @@ class SuggesterApp(QWidget):
 		self._suggest_button.pressed.connect(self.suggest_game)
 		suggest_layout.addWidget(self._suggest_button)
 
+		# Game Details
+
+		name_heading = QLabel("Game To Play")
+		self._details_name = QLabel("")
+		name_layout = QHBoxLayout()
+		name_layout.addWidget(name_heading)
+		name_layout.addWidget(self._details_name)
+
+		status_heading = QLabel("Status:")
+		self._details_status = QLabel("")
+		status_layout = QHBoxLayout()
+		status_layout.addWidget(status_heading)
+		status_layout.addWidget(self._details_status)
+
+		genre_heading = QLabel("Genres:")
+		self._details_genres = QLabel("")
+		genre_layout = QHBoxLayout()
+		genre_layout.addWidget(genre_heading)
+		genre_layout.addWidget(self._details_genres)
+
+		tag_heading = QLabel("Tags:")
+		self._details_tags = QLabel("")
+		tag_layout = QHBoxLayout()
+		tag_layout.addWidget(tag_heading)
+		tag_layout.addWidget(self._details_tags)
+
+		store_heading = QLabel("You own it on:")
+		self._details_stores = QLabel("")
+		store_layout = QHBoxLayout()
+		store_layout.addWidget(store_heading)
+		store_layout.addWidget(self._details_stores)
+
+		game_details_layout = QVBoxLayout()
+		game_details_layout.addLayout(name_layout)
+		game_details_layout.addLayout(status_layout)
+		game_details_layout.addLayout(genre_layout)
+		game_details_layout.addLayout(tag_layout)
+		game_details_layout.addLayout(store_layout)
+
 		main_layout = QVBoxLayout(self)
 		main_layout.addLayout(top_layout)
 		main_layout.addStretch(1)
 		main_layout.addLayout(filter_layout)
 		main_layout.addLayout(filter_display_layout)
 		main_layout.addLayout(suggest_layout)
+		main_layout.addLayout(game_details_layout)
 
 
 		self.show()
@@ -259,3 +300,17 @@ class SuggesterApp(QWidget):
 				print("No game meets the criteria!")
 			else:
 				print(game_suggestion.get_csv_dict())
+
+		if game_suggestion == None:
+			self._details_name.setText("No suitable game!")
+			self._details_status.setText("")
+			self._details_genres.setText("")
+			self._details_tags.setText("")
+			self._details_stores.setText("")
+		else:
+			details = game_suggestion.get_csv_dict()
+			self._details_name.setText(details[NAME_KEY])
+			self._details_status.setText(details[STATUS_KEY])
+			self._details_genres.setText(details[GENRES_KEY])
+			self._details_tags.setText(details[TAGS_KEY])
+			self._details_stores.setText(details[STORES_KEY])
