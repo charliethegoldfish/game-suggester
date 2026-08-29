@@ -3,6 +3,8 @@ from PyQt6.QtCore import (QDir, Qt)
 from PyQt6.QtWidgets import QApplication, QWidget, QComboBox, QLabel, QHBoxLayout, QVBoxLayout, QGridLayout, QCheckBox, QPushButton
 from PyQt6.QtGui import QIcon
 from core.gamenode import GameNode
+from game_suggester.filtering_functions import filter_games
+from game_suggester.pick_game_functions import pick_random_game
 
 def init_widget_details(widget: QWidget, name: str, tooltip: str):
 	widget.setObjectName(name)
@@ -57,18 +59,13 @@ class SuggesterApp(QWidget):
 		top_layout.addWidget(status_label)
 		top_layout.addWidget(self._status_combobox)
 
-		# Setup grid of genre checkboxes
-		# self._genre_checkbox_grid = self.create_checkbox_grid(self._genres, "Genres:")
+		# Setup genres
 		self._genre_layout = self.create_genre_adder()
 
-		# Setup grid of tag checkboxes
-		# self._tag_checkbox_grid = self.create_checkbox_grid(self._tags, "Tags:")
+		# Setup tags
 		self._tags_layout = self.create_tag_adder()
 
 		filter_layout = QHBoxLayout()
-		# bottom_layout.addLayout(self._genre_checkbox_grid)
-		# bottom_layout.addStretch(1)
-		# bottom_layout.addLayout(self._tag_checkbox_grid)
 		filter_layout.addLayout(self._genre_layout)
 		filter_layout.addStretch(1)
 		filter_layout.addLayout(self._tags_layout)
@@ -81,12 +78,17 @@ class SuggesterApp(QWidget):
 		filter_display_layout.addLayout(self._genre_display_grid)
 		filter_display_layout.addLayout(self._tags_display_grid)
 
+		suggest_layout = QHBoxLayout()
+		self._suggest_button = QPushButton("Suggest a Game")
+		self._suggest_button.pressed.connect(self.suggest_game)
+		suggest_layout.addWidget(self._suggest_button)
 
 		main_layout = QVBoxLayout(self)
 		main_layout.addLayout(top_layout)
 		main_layout.addStretch(1)
 		main_layout.addLayout(filter_layout)
 		main_layout.addLayout(filter_display_layout)
+		main_layout.addLayout(suggest_layout)
 
 
 		self.show()
@@ -236,3 +238,24 @@ class SuggesterApp(QWidget):
 		for key in display_dict:
 			label = display_dict[key]
 			label.setEnabled(False)
+
+	def suggest_game(self):
+		platform = self._platform_combobox.currentText()
+		status = self._status_combobox.currentText()
+		genres = self._selected_genres
+		tags = self._selected_tags
+		games = self._game_nodes
+
+		filtered_games = filter_games(games, platform, status, genres, tags)
+		game_suggestion = pick_random_game(filtered_games)
+
+		if self._verbose:
+			print("Suggesting game...")
+			print(f"Platform {platform} with a status of {status}")
+			print(f"Following genres: {genres}")
+			print(f"Following tags: {tags}")
+			print("Game to play:")
+			if game_suggestion == None:
+				print("No game meets the criteria!")
+			else:
+				print(game_suggestion.get_csv_dict())
