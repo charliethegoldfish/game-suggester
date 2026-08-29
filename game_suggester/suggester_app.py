@@ -221,9 +221,11 @@ class SuggesterApp(QWidget):
 			print(f'Adding tag: {tag}')
 
 	def clear_genres(self):
+		self._selected_genres = []
 		self.clear_display(self._genre_display_dict)
 
 	def clear_tags(self):
+		self._selected_tags = []
 		self.clear_display(self._tags_display_dict)
 
 	def update_display(self, display_dict: dict[str, QLabel], item: str):
