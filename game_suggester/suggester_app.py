@@ -1,5 +1,5 @@
 import sys
-from PyQt6.QtWidgets import QApplication, QWidget, QComboBox, QLabel, QHBoxLayout, QVBoxLayout
+from PyQt6.QtWidgets import QApplication, QWidget, QComboBox, QLabel, QHBoxLayout, QVBoxLayout, QGridLayout, QCheckBox
 from PyQt6.QtGui import QIcon
 from core.gamenode import GameNode
 
@@ -8,7 +8,7 @@ def init_widget_details(widget: QWidget, name: str, tooltip: str):
 	widget.setToolTip(tooltip)
 
 class SuggesterApp(QWidget):
-	def __init__(self, game_nodes: list[GameNode],genres: list[str], platforms: list[str], status_options: list[str], tags: list[str]):
+	def __init__(self, game_nodes: list[GameNode], genres: list[str], platforms: list[str], status_options: list[str], tags: list[str]):
 		super().__init__()
 		self.title = 'Game Suggester'
 		self.left = 200
@@ -52,12 +52,43 @@ class SuggesterApp(QWidget):
 		top_layout.addWidget(self._status_combobox)
 
 		# Setup grid of genre checkboxes
+		genre_checkbox_grid = self.create_checkbox_grid(self._genres, "Genres:")
 
 		# Setup grid of tag checkboxes
+		tag_checkbox_grid = self.create_checkbox_grid(self._tags, "Tags:")
+
+		bottom_layout = QHBoxLayout()
+		bottom_layout.addLayout(genre_checkbox_grid)
+		# bottom_layout.addStretch(1)
+		bottom_layout.addLayout(tag_checkbox_grid)
 
 		main_layout = QVBoxLayout(self)
 		main_layout.addLayout(top_layout)
+		main_layout.addStretch(1)
+		main_layout.addLayout(bottom_layout)
+
 
 		self.show()
+
+	def create_checkbox_grid(self, items: list[str], name: str) -> QGridLayout:
+		grid_layout = QGridLayout()
+
+		label = QLabel(name)
+		grid_layout.addWidget(label, 0, 0)
+
+		row = 1
+		column = 0
+
+		for item in items:
+			checkbox = QCheckBox(item)
+			grid_layout.addWidget(checkbox, row, column)
+
+			if column == 2:
+				row += 1
+				column = 0
+			else:
+				column += 1
+
+		return grid_layout
 
 	
