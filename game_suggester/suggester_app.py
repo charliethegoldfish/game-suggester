@@ -85,43 +85,7 @@ class SuggesterApp(QWidget):
 		suggest_layout.addWidget(self._suggest_button)
 
 		# Game Details
-
-		name_heading = QLabel("Game To Play")
-		self._details_name = QLabel("")
-		name_layout = QHBoxLayout()
-		name_layout.addWidget(name_heading)
-		name_layout.addWidget(self._details_name)
-
-		status_heading = QLabel("Status:")
-		self._details_status = QLabel("")
-		status_layout = QHBoxLayout()
-		status_layout.addWidget(status_heading)
-		status_layout.addWidget(self._details_status)
-
-		genre_heading = QLabel("Genres:")
-		self._details_genres = QLabel("")
-		genre_layout = QHBoxLayout()
-		genre_layout.addWidget(genre_heading)
-		genre_layout.addWidget(self._details_genres)
-
-		tag_heading = QLabel("Tags:")
-		self._details_tags = QLabel("")
-		tag_layout = QHBoxLayout()
-		tag_layout.addWidget(tag_heading)
-		tag_layout.addWidget(self._details_tags)
-
-		store_heading = QLabel("You own it on:")
-		self._details_stores = QLabel("")
-		store_layout = QHBoxLayout()
-		store_layout.addWidget(store_heading)
-		store_layout.addWidget(self._details_stores)
-
-		game_details_layout = QVBoxLayout()
-		game_details_layout.addLayout(name_layout)
-		game_details_layout.addLayout(status_layout)
-		game_details_layout.addLayout(genre_layout)
-		game_details_layout.addLayout(tag_layout)
-		game_details_layout.addLayout(store_layout)
+		game_details_layout = self.create_game_details_layout()
 
 		main_layout = QVBoxLayout(self)
 		main_layout.addLayout(top_layout)
@@ -131,27 +95,7 @@ class SuggesterApp(QWidget):
 		main_layout.addLayout(suggest_layout)
 		main_layout.addLayout(game_details_layout)
 
-
 		self.show()
-
-	def create_filter_adder(self, items: list[str], name: str, tooltip: str, combo_func: callable) -> QHBoxLayout:
-		layout = QHBoxLayout()
-
-		label = QLabel(name)
-		combobox = QComboBox()
-		init_widget_details(combobox, name, tooltip)
-		combobox.addItems(items)
-		combobox.textActivated.connect(combo_func)
-
-		button_add = QPushButton("Add")
-		button_clear = QPushButton("Clear")
-
-		layout.addWidget(label)
-		layout.addWidget(combobox)
-		layout.addWidget(button_add)
-		layout.addWidget(button_clear)
-
-		return layout
 
 	def create_genre_adder(self) -> QHBoxLayout:
 		layout = QHBoxLayout()
@@ -224,22 +168,40 @@ class SuggesterApp(QWidget):
 
 		return grid, display_dict
 
-	def get_tag_combo(self) -> QComboBox:
-		combobox = QComboBox()
-		init_widget_details("tag_combo", "Tags interested in")
-		combobox.addItems(self._tags)
-		combobox.textActivated.connect(self.update_tag_combo)
-		self._tag_highlighted = combobox.currentText
-		return combobox
+	def create_game_detail(self, label_text: str, details_key: str) -> QHBoxLayout:
+		heading = QLabel(label_text)
+		detail_label = QLabel("")
+		self._details_dict[details_key] = detail_label
+
+		layout = QHBoxLayout()
+		layout.addWidget(heading)
+		layout.addWidget(detail_label)
+		return layout
+
+	def create_game_details_layout(self) -> QVBoxLayout:
+		self._details_dict = {}
+
+		name_layout = self.create_game_detail("Game to Play:", NAME_KEY)
+		status_layout = self.create_game_detail("Status:", STATUS_KEY)
+		genre_layout = self.create_game_detail("Genres:", GENRES_KEY)
+		tag_layout = self.create_game_detail("Tags:", TAGS_KEY)
+		store_layout = self.create_game_detail("You own it on:", STORES_KEY)
+
+		game_details_layout = QVBoxLayout()
+		game_details_layout.addLayout(name_layout)
+		game_details_layout.addLayout(status_layout)
+		game_details_layout.addLayout(genre_layout)
+		game_details_layout.addLayout(tag_layout)
+		game_details_layout.addLayout(store_layout)
+
+		return game_details_layout
 
 	# @Slot(str)
 	def update_genre_combo(self, genre):
 		self._genre_highlighted = genre
-		# print(genre)
 
 	def update_tag_combo(self, tag):
 		self._tag_highlighted = tag
-		# print(tag)
 
 	def add_genre(self):
 		genre = self._genre_highlighted
@@ -301,16 +263,20 @@ class SuggesterApp(QWidget):
 			else:
 				print(game_suggestion.get_csv_dict())
 
-		if game_suggestion == None:
-			self._details_name.setText("No suitable game!")
-			self._details_status.setText("")
-			self._details_genres.setText("")
-			self._details_tags.setText("")
-			self._details_stores.setText("")
+		self.update_details(game_suggestion, self._details_dict)
+
+	def update_details(self, game: GameNode, detail_labels: dict[str, QLabel]):
+		if game == None:
+			for key in detail_labels:
+				if key == NAME_KEY:
+					detail_labels[key].setText("No suitable game!")
+				else:
+					detail_labels[key].setText("")
 		else:
-			details = game_suggestion.get_csv_dict()
-			self._details_name.setText(details[NAME_KEY])
-			self._details_status.setText(details[STATUS_KEY])
-			self._details_genres.setText(details[GENRES_KEY])
-			self._details_tags.setText(details[TAGS_KEY])
-			self._details_stores.setText(details[STORES_KEY])
+			details = game.get_csv_dict()
+
+			for key in detail_labels:
+				if key in details:
+					detail_labels[key].setText(details[key])
+				else:
+					detail_labels[key].setText("")
