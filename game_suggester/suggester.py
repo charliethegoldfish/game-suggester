@@ -6,7 +6,7 @@ from core.gamenode import GameNode
 from core.csv_functions import init_csv_dialect
 from game_suggester.load_game_functions import load_game_nodes, construct_game_library_data
 
-def suggester(csv_path: str, verbose: bool) -> None:
+def suggester(csv_path: str, verbose: bool) -> tuple[list[GameNode], list[str], list[str], list[str], list[str]]:
 	
 	print("game suggester!")
 
@@ -29,9 +29,12 @@ def suggester(csv_path: str, verbose: bool) -> None:
 			print(f'Available status options: {status_options}')
 			print(f'Available tags: {tags}')
 
-		app = QApplication(sys.argv)
-		ex = SuggesterApp(game_nodes, genres, platforms, status_options, tags, verbose)
-		sys.exit(app.exec())
+		return game_nodes, genres, platforms, status_options, tags
+		# if app == None:
+		# 	app = QApplication(sys.argv)
+		# ex = SuggesterApp(game_nodes, genres, platforms, status_options, tags, verbose)
+		
+		# sys.exit(app.exec())
 
 	except Exception as e:
 		print(f'Error suggesting game: {e}')
