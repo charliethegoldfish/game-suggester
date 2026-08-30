@@ -97,21 +97,28 @@ class SuggesterApp(QWidget):
 
 		self.show()
 
+	def create_combo_adder(self, items: list[str], name: str, tooltip: str, func: callable) -> QComboBox:
+		combobox = QComboBox()
+		init_widget_details(combobox, name, tooltip)
+		combobox.addItems(items)
+		combobox.textActivated.connect(func)
+		func(combobox.currentText())
+		return combobox
+
+	def create_button(self, text: str, func: callable) -> QPushButton:
+		button = QPushButton(text)
+		button.pressed.connect(func)
+		return button
+
 	def create_genre_adder(self) -> QHBoxLayout:
 		layout = QHBoxLayout()
 		
 		label = QLabel("Genres:")
-		combobox = QComboBox()
+		combobox = self.create_combo_adder(self._genres, "genre_combo", "Genres interested in", self.update_genre_combo)
 		label.setBuddy(combobox)
-		init_widget_details(combobox, "genre_combo", "Genres interested in")
-		combobox.addItems(self._genres)
-		combobox.textActivated.connect(self.update_genre_combo)
-		self.update_genre_combo(combobox.currentText())
 
-		button_add = QPushButton("Add")
-		button_add.pressed.connect(self.add_genre)
-		button_clear = QPushButton("Clear")
-		button_clear.pressed.connect(self.clear_genres)
+		button_add = self.create_button("Add", self.add_genre)
+		button_clear = self.create_button("Clear", self.clear_genres)
 
 		layout.addWidget(label)
 		layout.addWidget(combobox)
@@ -124,17 +131,11 @@ class SuggesterApp(QWidget):
 		layout = QHBoxLayout()
 				
 		label = QLabel("Tags:")
-		combobox = QComboBox()
+		combobox = self.create_combo_adder(self._tags, "tag_combo", "Tags interested in", self.update_tag_combo)
 		label.setBuddy(combobox)
-		init_widget_details(combobox, "tag_combo", "Tags interested in")
-		combobox.addItems(self._tags)
-		combobox.textActivated.connect(self.update_tag_combo)
-		self.update_tag_combo(combobox.currentText())
 
-		button_add = QPushButton("Add")
-		button_add.pressed.connect(self.add_tag)
-		button_clear = QPushButton("Clear")
-		button_clear.pressed.connect(self.clear_tags)
+		button_add = self.create_button("Add", self.add_tag)
+		button_clear = self.create_button("Clear", self.clear_tags)
 
 		layout.addWidget(label)
 		layout.addWidget(combobox)
