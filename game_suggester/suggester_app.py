@@ -1,15 +1,12 @@
 import sys
 from PyQt6.QtCore import (QDir, Qt)
-from PyQt6.QtWidgets import QApplication, QWidget, QComboBox, QLabel, QHBoxLayout, QVBoxLayout, QGridLayout, QCheckBox, QPushButton
+from PyQt6.QtWidgets import QWidget, QComboBox, QLabel, QHBoxLayout, QVBoxLayout, QGridLayout, QPushButton
 from PyQt6.QtGui import QIcon
 from core.gamenode import GameNode
 from core.core_config import *
 from game_suggester.filtering_functions import filter_games
 from game_suggester.pick_game_functions import pick_random_game
-
-def init_widget_details(widget: QWidget, name: str, tooltip: str):
-	widget.setObjectName(name)
-	widget.setToolTip(tooltip)
+from core.gui_functions import init_widget_details
 
 class SuggesterApp(QWidget):
 	def __init__(self, game_nodes: list[GameNode], genres: list[str], platforms: list[str], status_options: list[str], tags: list[str], verbose):
