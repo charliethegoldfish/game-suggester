@@ -1,6 +1,4 @@
 import os
-import sys
-from PyQt6.QtWidgets import QApplication
 from game_suggester.suggester_app import SuggesterApp
 from core.gamenode import GameNode
 from core.csv_functions import init_csv_dialect
@@ -30,11 +28,6 @@ def suggester(csv_path: str, verbose: bool) -> tuple[list[GameNode], list[str], 
 			print(f'Available tags: {tags}')
 
 		return game_nodes, genres, platforms, status_options, tags
-		# if app == None:
-		# 	app = QApplication(sys.argv)
-		# ex = SuggesterApp(game_nodes, genres, platforms, status_options, tags, verbose)
-		
-		# sys.exit(app.exec())
 
 	except Exception as e:
 		print(f'Error suggesting game: {e}')

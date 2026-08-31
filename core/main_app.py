@@ -1,6 +1,5 @@
 from PyQt6.QtCore import (QDir, Qt)
 from PyQt6.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout, QLabel, QLineEdit, QPushButton, QFileDialog, QProgressBar
-from core.gui_functions import embed_into_hbox_layout
 from md_to_csv.converter import converter
 from game_suggester.suggester import suggester
 from game_suggester.suggester_app import SuggesterApp
