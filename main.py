@@ -4,6 +4,7 @@ from PyQt6.QtWidgets import QApplication
 from game_suggester.suggester import suggester
 from md_to_csv.converter import converter
 from core.main_app import MainApp
+from game_suggester.suggester_app import SuggesterApp
 
 def main():
 	parser = argparse.ArgumentParser(description="Game Suggester")
@@ -19,7 +20,11 @@ def main():
 	if args.generate != None:
 		converter(args.generate, args.verbose)
 	elif args.suggest != None:
-		suggester(args.suggest, args.verbose)
+		game_nodes, genres, platforms, status_options, tags = suggester(args.suggest, args.verbose)
+
+		app = QApplication(sys.argv)
+		ex = SuggesterApp(game_nodes, genres, platforms, status_options, tags, args.verbose)
+		sys.exit(app.exec())
 	else:
 		if args.verbose:
 			print("Running the main app here")
